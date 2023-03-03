@@ -53,7 +53,7 @@ chrome_options.add_argument("--disable-extensions")
 chrome_options.add_argument("--proxy-server='direct://'")
 chrome_options.add_argument("--proxy-bypass-list=*")
 chrome_options.add_argument("--start-maximized")
-# chrome_options.add_argument('--headless')
+chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('--no-sandbox')
@@ -88,7 +88,7 @@ def quill_login(driver):
     driver.get("https://quillbot.com/login")
     quill_user = "rajan@grimbyte.com"
     quill_pwd = "Grimbyte123."
-    delay = 3 # seconds
+    delay = 10 # seconds
     try:
         myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input')))
         #print("Page is ready!")
@@ -117,6 +117,7 @@ def quill_login(driver):
         element=driver.find_element(by=By.XPATH, value='//div[contains(@class,"MuiDialogContent-root")]/button')
         print(status)
         driver.execute_script("arguments[0].click();", element)
+    print("The Login Is Successfully")    
 # out_tag = {}
 def process_soup(soup):
     # global out_tag
@@ -181,6 +182,7 @@ def process_soup(soup):
     for ele in list:
         str1 += ele + "\n\n\n"
     print("word count:-",len(str1.split()))
+    
     return str1
 def paraphrase_soup(driver,str1):
     time.sleep(1.5)
@@ -293,6 +295,7 @@ def paraphrase_soup(driver,str1):
     except:
         pass
     content = driver.find_element(by=By.XPATH, value="//*[@id='editable-content-within-article']").text
+    print(" ========= Get String after Quil ========= ")
     return content
 
 # datetime object containing current date and time

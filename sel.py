@@ -8,7 +8,7 @@ chrome_options.add_argument("--disable-extensions")
 chrome_options.add_argument("--proxy-server='direct://'")
 chrome_options.add_argument("--proxy-bypass-list=*")
 chrome_options.add_argument("--start-maximized")
-chrome_options.add_argument('--headless')
+# chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('--no-sandbox')
@@ -22,8 +22,11 @@ options = webdriver.ChromeOptions()
 chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
 
-driver.get("https://www.pelhamplus.com/")
+driver.get("https://quillbot.com/login")
 
-print(driver.title)
+
+ff = open("home.html",'w')
+ff.write(str(driver.page_source))
+# print(driver.page_source)
 
 driver.quit()
