@@ -19,7 +19,7 @@ chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--ignore-certificate-errors')
 chrome_options.add_argument("--disable-notifications")
 chrome_options.add_argument("--disable-popup-blocking")
-driver_path='chromedriver'
+driver_path=r'/usr/bin/chromedriver'
 # driver=webdriver.Chrome(options=chrome_options,executable_path="chromedriver.exe")
 # driver = webdriver.Chrome(options=chrome_options
 s = Service(driver_path)
