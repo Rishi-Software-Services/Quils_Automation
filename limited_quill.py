@@ -53,17 +53,19 @@ chrome_options.add_argument("--disable-extensions")
 chrome_options.add_argument("--proxy-server='direct://'")
 chrome_options.add_argument("--proxy-bypass-list=*")
 chrome_options.add_argument("--start-maximized")
-chrome_options.add_argument('--headless')
+# chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--ignore-certificate-errors')
 chrome_options.add_argument("--disable-notifications")
 chrome_options.add_argument("--disable-popup-blocking")
-driver=webdriver.Chrome(executable_path="chromedriver.exe")
+driver_path=r'chromedriver.exe'
+# driver=webdriver.Chrome(options=chrome_options,executable_path="chromedriver.exe")
+# driver = webdriver.Chrome(options=chrome_options
+s = Service(driver_path)
 
-#driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=chrome_options)
-# s = Service(driver_path)
+driver = webdriver.Chrome(options=chrome_options, service=s)
 options = webdriver.ChromeOptions()
 chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 # driver = webdriver.Chrome(options=chrome_options, service=s)
@@ -335,11 +337,11 @@ for x in alll:
     print(len(x))
     print(x[2])
     print("send2",x[0],x[1],x[3])
-    mycursor.execute("SELECT * FROM Total_posts where Destination_id=(%s)" %  (x[10]))
+    mycursor.execute("SELECT * FROM Total_posts where Destination_id=(%s)" %  (x[11]))
     total_quill_all = mycursor.fetchall()[-1][3]
     
     if total_quill_all >=9:
-        mycursor.execute("update bulk_feed_content set status=0 where status is null AND Destination_id=%s"% (x[10]))
+        mycursor.execute("update bulk_feed_content set status=0 where status is null AND Destination_id=%s"% (x[11]))
         mydb.commit()
         continue
     print("all",total_quill_all)
