@@ -86,6 +86,7 @@ def quill_login(driver):
     wp_pwd = "zd2eW0Aj6F"
     #driver.get("https://quillbot.com")
     driver.get("https://quillbot.com/login")
+    print("the title is that = ",driver.title)
     quill_user = "rajan@grimbyte.com"
     quill_pwd = "Grimbyte123."
     delay = 20 # seconds
