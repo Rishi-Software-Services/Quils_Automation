@@ -75,7 +75,7 @@ def remove_non_ascii_1(data):
 def check_exists_by_xpath(xpath):
     try:
         #driver.find_element_by_xpath(xpath)
-        driver.find_element(by=By.XPATH, value=xpath)
+        driver.find_element(by=By.CLASS_NAME,xpath)
     except NoSuchElementException:
         return False
     return True
@@ -90,28 +90,28 @@ def quill_login(driver):
     quill_pwd = "Grimbyte123."
     delay = 10 # seconds
     try:
-        myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input')))
+        myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, "//*[@id='mui-3']")))
         #print("Page is ready!")
     except TimeoutException:
         print("1Loading took too much time!")
     #username = driver.find_element_by_xpath("//*[@id='mui-3']")
-    username = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[3]/div/div/input")
+    username = driver.find_element(by=By.XPATH, value="//*[@id='mui-3']")
     username.clear()
     username.send_keys(quill_user)
     try:
-        myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[4]/div/div/input')))
+        myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, "//*[@id='mui-4']")))
         #print("Page is ready!")
     except TimeoutException:
         print("2Loading took too much time!")
     #password = driver.find_element_by_xpath("//*[@id='mui-4']")
-    password = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[4]/div/div/input")
+    password = driver.find_element(by=By.XPATH, value="//*[@id='mui-4']")
     password.clear()
     password.send_keys(quill_pwd)
     #driver.find_element_by_xpath("//*[@id='loginContainer']/div/div[6]/button").click()
-    driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[2]/div[3]/section[1]/div/div/div/div/div/div[3]/div/div[5]/button").click()
+    driver.find_element(By.CLASS_NAME,"css-v7do75").click()
     #time.sleep(5)
 
-    status = check_exists_by_xpath('//div[contains(@class,"MuiDialogContent-root")]/button')
+    status = check_exists_by_xpath('css-v7do75')
     if(status):
         #element=driver.find_element_by_xpath('//div[contains(@class,"MuiDialogContent-root")]/button')
         element=driver.find_element(by=By.XPATH, value='//div[contains(@class,"MuiDialogContent-root")]/button')
