@@ -161,7 +161,7 @@ if "__main__" == __name__:
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
     chrome_options.add_argument("--start-maximized")
-    # chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--no-sandbox')
@@ -170,7 +170,7 @@ if "__main__" == __name__:
     chrome_options.add_argument("--disable-popup-blocking")
 
     ####################### Add On Driver Path #####################
-    driver_path='chromedriver'
+    driver_path=r'/usr/bin/chromedriver'
     # driver=webdriver.Chrome(options=chrome_options,executable_path="chromedriver.exe")
     # driver = webdriver.Chrome(options=chrome_options
     s = Service(driver_path)
