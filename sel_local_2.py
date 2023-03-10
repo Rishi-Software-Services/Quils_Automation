@@ -53,6 +53,7 @@ def Paraphrase_Soup(Driver,New_text):
     return copy_content
 
 def process_soup(soup):
+    print("======== Process_sout ========")
     # global out_tag
     """ def findchild(tag):
         print(tag.name)
@@ -161,7 +162,7 @@ if "__main__" == __name__:
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
     chrome_options.add_argument("--start-maximized")
-    # chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--no-sandbox')
@@ -222,11 +223,11 @@ if "__main__" == __name__:
         print("send2",x[0],x[1],x[3])
         mycursor.execute("SELECT * FROM Total_posts where Destination_id=(%s)" %  (x[11]))
         total_quill_all = mycursor.fetchall()[-1][3]
-
-        if total_quill_all >=9:
-            mycursor.execute("update bulk_feed_content set status=0 where status is null AND Destination_id=%s"% (x[11]))
-            mydb.commit()
-            continue
+        print("Total Quill_all",total_quill_all)
+        # if total_quill_all >=9:
+        #     mycursor.execute("update bulk_feed_content set status=0 where status is null AND Destination_id=%s"% (x[11]))
+        #     mydb.commit()
+        #     continue
         print("all",total_quill_all)
 
         newdata=remove_non_ascii_1(x[4])

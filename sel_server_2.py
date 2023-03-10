@@ -224,10 +224,10 @@ if "__main__" == __name__:
         mycursor.execute("SELECT * FROM Total_posts where Destination_id=(%s)" %  (x[11]))
         total_quill_all = mycursor.fetchall()[-1][3]
 
-        if total_quill_all >=9:
-            mycursor.execute("update bulk_feed_content set status=0 where status is null AND Destination_id=%s"% (x[11]))
-            mydb.commit()
-            continue
+        # if total_quill_all >=9:
+        #     mycursor.execute("update bulk_feed_content set status=0 where status is null AND Destination_id=%s"% (x[11]))
+        #     mydb.commit()
+        #     continue
         print("all",total_quill_all)
 
         newdata=remove_non_ascii_1(x[4])
