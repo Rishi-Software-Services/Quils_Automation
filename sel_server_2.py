@@ -20,7 +20,7 @@ def remove_non_ascii_1(data):
 
 def Paraphrase_Soup(Driver,New_text):
     Driver.refresh()
-    time.sleep(5)
+    time.sleep(10)
     delay = 30 # seconds
     try:
         myElem = WebDriverWait(Driver, delay).until(EC.presence_of_element_located((By.XPATH,"//div[@id='inputText']")))
