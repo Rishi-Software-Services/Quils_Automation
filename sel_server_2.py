@@ -19,6 +19,7 @@ def remove_non_ascii_1(data):
     return ''.join([i if ord(i) < 128 else ' ' for i in data])
 
 def Paraphrase_Soup(Driver,New_text):
+    print("========== ParaPhrase Proccess ============")
     Driver.refresh()
     time.sleep(10)
     delay = 30 # seconds
