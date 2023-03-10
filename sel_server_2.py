@@ -246,6 +246,7 @@ if "__main__" == __name__:
             mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0]))
             mydb.commit()
             continue
+        print("===== Start From here ====")
         content= Paraphrase_Soup(driver,str1)
         quilled_text=content.split('\n\n\n')
         # print("quilled p count:",len(quilled_text))py
