@@ -75,7 +75,7 @@ def remove_non_ascii_1(data):
 def check_exists_by_xpath(xpath):
     try:
         #driver.find_element_by_xpath(xpath)
-        driver.find_element(by=By.CLASS_NAME,xpath)
+        driver.find_element(by=By.CLASS_NAME,value=xpath)
     except NoSuchElementException:
         return False
     return True
