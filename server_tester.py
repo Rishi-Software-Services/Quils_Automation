@@ -12,6 +12,28 @@ import re
 # time.sleep(10)
 import mysql.connector
 
+def get_from_database(mydb):
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT * FROM destination_website where status = 1 ")
+    myresult = mycursor.fetchall()
+    listt=[]
+    for des_id in myresult:
+        listt.append(des_id[0])
+    # print(listt)
+    bfw_li=[]
+    for des in listt:
+        mycursor.execute("SELECT * FROM bulk_feed_website where des_id=(%s)" %  (des))
+        websites = mycursor.fetchall()
+        bfw_li.extend(websites)
+    alll=[]
+    for bfw_idd in bfw_li:
+        mycursor.execute("SELECT * FROM bulk_feed_content where bfw_id=(%s) and status is Null " % (bfw_idd[0]) )
+        webs = mycursor.fetchall()
+        alll.extend(webs)
+    #//div[5]/div[3]/div/div[1]/button/svg
+    print(mycursor.rowcount, "record fetched.")
+    return alll
+
 def find_replacement(m):
     return out_tagaaa[m.group(1)]
 
@@ -195,27 +217,8 @@ if "__main__" == __name__:
     Quil_Login(driver)
     ##################### Get Data From Data Base #####################
     print("=============== Get Data From Database =============")
-
+    alll = get_from_database(mydb)
     mycursor = mydb.cursor()
-    mycursor.execute("SELECT * FROM destination_website where status = 1 ")
-    myresult = mycursor.fetchall()
-    listt=[]
-    for des_id in myresult:
-        listt.append(des_id[0])
-    # print(listt)
-    bfw_li=[]
-    for des in listt:
-        mycursor.execute("SELECT * FROM bulk_feed_website where des_id=(%s)" %  (des))
-        websites = mycursor.fetchall()
-        bfw_li.extend(websites)
-    alll=[]
-    for bfw_idd in bfw_li:
-        mycursor.execute("SELECT * FROM bulk_feed_content where bfw_id=(%s) and status is Null " % (bfw_idd[0]) )
-        webs = mycursor.fetchall()
-        alll.extend(webs)
-    #//div[5]/div[3]/div/div[1]/button/svg
-    print(mycursor.rowcount, "record fetched.")
-
     count=0
     for x in alll:
         print(len(x))
