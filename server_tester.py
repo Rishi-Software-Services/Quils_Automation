@@ -74,13 +74,16 @@ def Quilled_Data_Process(content,soup):
         rt = re.sub(regex, find_replacement,(str(soup),out_tagaaa))
     except:
         mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0]))
+        print("Status = 0")
         mydb.commit() 
 
     if flag==1:
         try:
             mycursor.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(rt),x[0]))
+            print("status = 1")
         except:
-            mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0])) 
+            mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0]))
+            print("Status = 0") 
         mydb.commit()
           
     if count==50:
