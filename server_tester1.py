@@ -233,13 +233,13 @@ def Quil_Login(Driver):
 
     delay = 30
     try:
-        myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, "//input[@id='mui-3']")))
+        myElem = WebDriverWait(Driver, delay).until(EC.presence_of_element_located((By.XPATH, "//input[@id='mui-3']")))
     except TimeoutException:
         print("1Loading took too much time!")
     Input_user = driver.find_element(by=By.XPATH, value="//input[@id='mui-3']")
     Input_user.send_keys(UserName)    
     try:
-        myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, "//input[@id='mui-4']")))
+        myElem = WebDriverWait(Driver, delay).until(EC.presence_of_element_located((By.XPATH, "//input[@id='mui-4']")))
     except TimeoutException:
         print("1Loading took too much time!")
 
@@ -330,7 +330,6 @@ def main():
         else:
             return driver
     return driver,True
-
 
 if "__main__" == __name__:
     print('======== Start QuilBot Proccess ========')
