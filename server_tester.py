@@ -12,7 +12,7 @@ import re
 # time.sleep(10)
 import mysql.connector
 
-def Quilled_Data_Process(content):
+def Quilled_Data_Process(content,soup):
     quilled_text=content.split('\n\n\n')
 
     out_tagaaa = {}
@@ -82,7 +82,7 @@ def Quilled_Data_Process(content):
         except:
             mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0])) 
         mydb.commit()
-        count+=1   
+          
     if count==50:
         return False 
 
@@ -318,9 +318,10 @@ if "__main__" == __name__:
 
         ######################### Send Quil Content to  Data Base #################
 
-        process_status = Quilled_Data_Process(content)
+        process_status = Quilled_Data_Process(content,soup)
         if process_status != False:
             print(" ======== All Processing Complated ========")
+            count+=1
         else:
             break    
 
