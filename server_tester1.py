@@ -275,19 +275,12 @@ def Driver_settings(driver_path):
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     return driver
 
-def main():
+def main(mydb):
     driver = Driver_settings(Chrome_driver_path)
     now = datetime.now()
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
     print("date and time =", dt_string)
 
-    ##################### Data Base ##############################
-    mydb = mysql.connector.connect(
-        host="3.140.57.116",
-        user="wp_raj1",
-        password="rajPassword95$",
-        database="automation00"
-    )
     ########################## Login Process ##########################
     Quil_Login(driver)
     ##################### Get Data From Data Base #####################
@@ -320,7 +313,8 @@ def main():
         except Exception as e:
             print("Error ==",e)  
             time.sleep(30)
-            return driver
+            driver.quit()
+            return False
 
         ######################### Send Quil Content to  Data Base #################
 
@@ -329,8 +323,8 @@ def main():
             print(" ======== All Processing Complated ========")
             count+=1
         else:
-            return driver
-    return driver,True
+            return True
+    return True
 
 if "__main__" == __name__:
     print('======== Start QuilBot Proccess ========')
@@ -339,10 +333,17 @@ if "__main__" == __name__:
 
     Chrome_driver_path = "/usr/bin/chromedriver"
 
+    ##################### Data Base ##############################
+    mydb = mysql.connector.connect(
+        host="3.140.57.116",
+        user="wp_raj1",
+        password="rajPassword95$",
+        database="automation00"
+    )
+
     ####################################################
     while True:
-        driver = main()
-        driver[0].quit()
-        if driver[1] == True:
+        driver = main(mydb)
+        if driver == True:
             break
         time.sleep(30)
