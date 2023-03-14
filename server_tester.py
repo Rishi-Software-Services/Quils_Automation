@@ -17,22 +17,22 @@ def Quilled_Data_Process(content,soup):
 
     out_tagaaa = {}
     key_list=[]
-    value_list=[]
+    value_list12=[]
     p=soup.findAll() 
     for tag in p:
         if(tag.name=="a" and tag.has_attr('href')):
-            value_list.append(str(tag))
+            value_list12.append(tag['href'])
             key_list.append(tag.text)
     out_tagaaa.clear() 
-    for key, value in zip(key_list, value_list):
+    for key, value in zip(key_list, value_list12):
         if key=="":
             continue
-        elif 'a href="http' in value and "rel" not in value:
-            ind = value.index('>',0)
-            value = value[:ind-1]+'" rel="noopener nofollow'+value[ind-1:]
-            out_tagaaa[key] = value
-        elif 'a href="http' in value and 'rel="tag"'  in value:
-            continue
+        # elif 'a href="http' in value and "rel" not in value:
+        #     ind = value.index('>',0)
+        #     value = value[:ind-1]+'" rel="noopener nofollow'+value[ind-1:]
+        #     out_tagaaa[key] = value
+        # elif 'a href="http' in value and 'rel="tag"'  in value:
+        #     continue
         else:
             out_tagaaa[key] = value
     # print(out_tagaaa)
@@ -69,17 +69,18 @@ def Quilled_Data_Process(content,soup):
 
     print("The End")
 
-    regex = r'({})'.format(r'|'.join(re.escape(w) for w in out_tagaaa))  
-    try:
-        rt = re.sub(regex, find_replacement,(str(soup),out_tagaaa))
-    except:
-        mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0]))
-        print("Status = 0")
-        mydb.commit() 
+    new_article1=str(soup)
+    for word, link in out_tagaaa.items():
+        if word in new_article1:
+            if "youtube" in link:
+                new_link = f"<a href='{link}' >{word}</a>"
+            else:
+                new_link = f"<a href='{link}' rel='noopener nofollow'>{word}</a>"
+            new_article1 = new_article1.replace(word, new_link, 1)
 
     if flag==1:
         try:
-            mycursor.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(rt),x[0]))
+            mycursor.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (new_article1,x[0]))
             print("status = 1")
         except:
             mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0]))
