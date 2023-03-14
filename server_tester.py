@@ -151,6 +151,7 @@ def Paraphrase_Soup(Driver,New_text):
         print("4Loading took too much time!")
     copy_content = Driver.find_element(By.XPATH,value="//span[@id='editable-content-within-article']").text
     print("======== Quil Successfully ==========")
+    time.sleep(10)
     return copy_content
 
 def process_soup(soup):
