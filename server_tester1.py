@@ -145,7 +145,7 @@ def Paraphrase_Soup(Driver,New_text):
         print("3Loading took too much time!")
     timeout = 40
     try:
-        myElem = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.XPATH, '//button/div[text()="Rephrase"]')))
+        myElem = WebDriverWait(Driver, timeout).until(EC.presence_of_element_located((By.XPATH, '//button/div[text()="Rephrase"]')))
         print("paraphrase Page is ready!")
     except TimeoutException:
         print("4Loading took too much time!")
@@ -243,10 +243,10 @@ def Quil_Login(Driver):
     except TimeoutException:
         print("1Loading took too much time!")
 
-    Input_pass = driver.find_element(by=By.XPATH, value="//input[@id='mui-4']")
+    Input_pass = Driver.find_element(by=By.XPATH, value="//input[@id='mui-4']")
     Input_pass.send_keys(PassWord)
 
-    Click_login_button = driver.find_element(By.XPATH,value="//button[normalize-space()='Log In']")
+    Click_login_button = Driver.find_element(By.XPATH,value="//button[normalize-space()='Log In']")
     Click_login_button.click()
     time.sleep(10)
     print("======= Login Successfully =======")
