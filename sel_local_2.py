@@ -12,15 +12,112 @@ import re
 # time.sleep(10)
 import mysql.connector
 
-def find_replacement(m):
+def Quilled_Data_Process(content,soup):
+    quilled_text=content.split('\n\n\n')
+
+    out_tagaaa = {}
+    key_list=[]
+    value_list=[]
+    p=soup.findAll() 
+    for tag in p:
+        if(tag.name=="a" and tag.has_attr('href')):
+            value_list.append(str(tag))
+            key_list.append(tag.text)
+    out_tagaaa.clear() 
+    for key, value in zip(key_list, value_list):
+        if key=="":
+            continue
+        elif 'a href="http' in value and "rel" not in value:
+            ind = value.index('>',0)
+            value = value[:ind-1]+'" rel="noopener nofollow'+value[ind-1:]
+            out_tagaaa[key] = value
+        elif 'a href="http' in value and 'rel="tag"'  in value:
+            continue
+        else:
+            out_tagaaa[key] = value
+    # print(out_tagaaa)
+    i=-1
+    j=0
+    flag=1
+    for tag in p:
+        i+=1
+        if(tag.name=="script"):
+                tag.decompose()
+        if(tag.name=="script"):
+                continue
+        if(tag.name=='p'):
+            if(tag.findParent().name=='blockquote'):
+                continue
+            if(len(tag.findChildren('p'))>0):
+                continue
+            if(tag.text=='' or tag.get_text(strip=True)==''):
+                continue
+            #newtext=newtext + tag.text + "\n\n\n"
+            #newtext[i]=tag.find(text=True, recursive=False)
+            try:
+                p[i].string=quilled_text[j]
+                j+=1
+
+
+            except IndexError:
+                mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup),x[0]))
+                mydb.commit()
+                print("exception")
+                time.sleep(2)
+                flag=0
+                break
+
+    print("The End")
+
+    regex = r'({})'.format(r'|'.join(re.escape(w) for w in out_tagaaa))  
+    try:
+        rt = re.sub(regex, find_replacement,(str(soup),out_tagaaa))
+    except:
+        mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0]))
+        mydb.commit() 
+
+    if flag==1:
+        try:
+            mycursor.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(rt),x[0]))
+        except:
+            mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0])) 
+        mydb.commit()
+          
+    if count==50:
+        return False 
+
+def get_from_database(mydb):
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT * FROM destination_website where status = 1 ")
+    myresult = mycursor.fetchall()
+    listt=[]
+    for des_id in myresult:
+        listt.append(des_id[0])
+    # print(listt)
+    bfw_li=[]
+    for des in listt:
+        mycursor.execute("SELECT * FROM bulk_feed_website where des_id=(%s)" %  (des))
+        websites = mycursor.fetchall()
+        bfw_li.extend(websites)
+    alll=[]
+    for bfw_idd in bfw_li:
+        mycursor.execute("SELECT * FROM bulk_feed_content where bfw_id=(%s) and status is Null " % (bfw_idd[0]) )
+        webs = mycursor.fetchall()
+        alll.extend(webs)
+    #//div[5]/div[3]/div/div[1]/button/svg
+    print(mycursor.rowcount, "record fetched.")
+    return alll
+
+def find_replacement(m,out_tagaaa):
     return out_tagaaa[m.group(1)]
 
 def remove_non_ascii_1(data):
     return ''.join([i if ord(i) < 128 else ' ' for i in data])
 
 def Paraphrase_Soup(Driver,New_text):
+    print("========== ParaPhrase Proccess ============")
     Driver.refresh()
-    time.sleep(5)
+    time.sleep(10)
     delay = 30 # seconds
     try:
         myElem = WebDriverWait(Driver, delay).until(EC.presence_of_element_located((By.XPATH,"//div[@id='inputText']")))
@@ -53,7 +150,6 @@ def Paraphrase_Soup(Driver,New_text):
     return copy_content
 
 def process_soup(soup):
-    print("======== Process_sout ========")
     # global out_tag
     """ def findchild(tag):
         print(tag.name)
@@ -162,7 +258,7 @@ if "__main__" == __name__:
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
     chrome_options.add_argument("--start-maximized")
-    chrome_options.add_argument('--headless')
+    # chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--no-sandbox')
@@ -171,7 +267,7 @@ if "__main__" == __name__:
     chrome_options.add_argument("--disable-popup-blocking")
 
     ####################### Add On Driver Path #####################
-    driver_path='chromedriver'
+    driver_path=r'/usr/bin/chromedriver'
     # driver=webdriver.Chrome(options=chrome_options,executable_path="chromedriver.exe")
     # driver = webdriver.Chrome(options=chrome_options
     s = Service(driver_path)
@@ -189,33 +285,14 @@ if "__main__" == __name__:
         host="3.140.57.116",
         user="wp_raj1",
         password="rajPassword95$",
-        database="automation"
+        database="automation00"
     )
     ########################## Login Process ##########################
     Quil_Login(driver)
     ##################### Get Data From Data Base #####################
     print("=============== Get Data From Database =============")
-
+    alll = get_from_database(mydb)
     mycursor = mydb.cursor()
-    mycursor.execute("SELECT * FROM destination_website where status = 1 ")
-    myresult = mycursor.fetchall()
-    listt=[]
-    for des_id in myresult:
-        listt.append(des_id[0])
-    # print(listt)
-    bfw_li=[]
-    for des in listt:
-        mycursor.execute("SELECT * FROM bulk_feed_website where des_id=(%s)" %  (des))
-        websites = mycursor.fetchall()
-        bfw_li.extend(websites)
-    alll=[]
-    for bfw_idd in bfw_li:
-        mycursor.execute("SELECT * FROM bulk_feed_content where bfw_id=(%s) and status is Null " % (bfw_idd[0]) )
-        webs = mycursor.fetchall()
-        alll.extend(webs)
-    #//div[5]/div[3]/div/div[1]/button/svg
-    print(mycursor.rowcount, "record fetched.")
-
     count=0
     for x in alll:
         print(len(x))
@@ -223,108 +300,34 @@ if "__main__" == __name__:
         print("send2",x[0],x[1],x[3])
         mycursor.execute("SELECT * FROM Total_posts where Destination_id=(%s)" %  (x[11]))
         total_quill_all = mycursor.fetchall()[-1][3]
-        print("Total Quill_all",total_quill_all)
-        # if total_quill_all >=9:
-        #     mycursor.execute("update bulk_feed_content set status=0 where status is null AND Destination_id=%s"% (x[11]))
-        #     mydb.commit()
-        #     continue
+
         print("all",total_quill_all)
 
         newdata=remove_non_ascii_1(x[4])
+
         soup = BeautifulSoup(newdata, 'html.parser')
-        # print(soup)
-        img_src_list = []  
-        for img in soup.find_all('img'):
-            if '.png' in img.get('src'):
-                continue
-            img_src_list.append(img.get('src')) 
 
         str1=process_soup(soup)
         # print(out_tag)
         if(len(str1.split())>1600):
-            #shutil.move(file_path,discarded)
+            print(" =======  Article Is Long =======")
             mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0]))
             mydb.commit()
             continue
-        content= Paraphrase_Soup(driver,str1)
-        quilled_text=content.split('\n\n\n')
-        # print("quilled p count:",len(quilled_text))py
-        # print("quilled_text   ===",quilled_text)
-        # print(type(quilled_text))
-        #print("p count:",len(soup.find_all('p',recursive=False)))
-        #for x in quilled_text:
-        #    i=int(x.split(".",1)[0])
-        #    p[i].string=x.split(".",1)[1]
-        out_tagaaa = {}
-        key_list=[]
-        value_list=[]
-        p=soup.findAll()  
-        for tag in p:
-            if(tag.name=="a" and tag.has_attr('href')):
-                value_list.append(str(tag))
-                key_list.append(tag.text)
-        out_tagaaa.clear() 
-        for key, value in zip(key_list, value_list):
-            if key=="":
-                continue
-            elif 'a href="http' in value and "rel" not in value:
-                ind = value.index('>',0)
-                value = value[:ind-1]+'" rel="noopener nofollow'+value[ind-1:]
-                out_tagaaa[key] = value
-            elif 'a href="http' in value and 'rel="tag"'  in value:
-                continue
-            else:
-                out_tagaaa[key] = value
-        # print(out_tagaaa)
-        i=-1
-        j=0
-        flag=1
-        for tag in p:
-            i+=1
-            if(tag.name=="script"):
-                    tag.decompose()
-            if(tag.name=="script"):
-                    continue
-            if(tag.name=='p'):
-                if(tag.findParent().name=='blockquote'):
-                    continue
-                if(len(tag.findChildren('p'))>0):
-                    continue
-                if(tag.text=='' or tag.get_text(strip=True)==''):
-                    continue
-                #newtext=newtext + tag.text + "\n\n\n"
-                #newtext[i]=tag.find(text=True, recursive=False)
-                try:
-                    p[i].string=quilled_text[j]
-                    j+=1
-
-
-                except IndexError:
-                    mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (str(soup),x[0]))
-                    mydb.commit()
-                    print("exception")
-                    time.sleep(2)
-                    flag=0
-                    break
-        #f = open(spinned,"w",encoding='utf-8')
-        #with codecs.open(spinned, 'w',encoding="utf-8") as f:
-        #f.write(str(soup))
-        # print("soup   ===",str(soup))
-        print("The End")
-        regex = r'({})'.format(r'|'.join(re.escape(w) for w in out_tagaaa))  
         try:
-            rt = re.sub(regex, find_replacement,(str(soup)))
-        except:
-            mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0]))
-            mydb.commit() 
+            content= Paraphrase_Soup(driver,str1)
+        except Exception as e:
+            print("Error =",e)
+            continue    
 
-        if flag==1:
-            try:
-                mycursor.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (str(rt),x[0]))
-            except:
-                mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0])) 
-            mydb.commit()
-            count+=1   
-        if count==50:
-            break 
+
+        ######################### Send Quil Content to  Data Base #################
+
+        process_status = Quilled_Data_Process(content,soup)
+        if process_status != False:
+            print(" ======== All Processing Complated ========")
+            count+=1
+        else:
+            break    
+
     driver.quit()

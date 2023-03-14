@@ -314,7 +314,11 @@ if "__main__" == __name__:
             mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0]))
             mydb.commit()
             continue
-        content= Paraphrase_Soup(driver,str1)
+        try:
+            content= Paraphrase_Soup(driver,str1)
+        except Exception as e:
+            print("Error ==",e)     
+            continue
 
         ######################### Send Quil Content to  Data Base #################
 
