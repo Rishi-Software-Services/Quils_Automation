@@ -12,7 +12,7 @@ import re
 # time.sleep(10)
 import mysql.connector
 
-def Quilled_Data_Process(content,soup,mydb):
+def Quilled_Data_Process(content,soup,mydb,count):
     mycursor = mydb.cursor()
     quilled_text=content.split('\n\n\n')
 
@@ -324,7 +324,7 @@ def main():
 
         ######################### Send Quil Content to  Data Base #################
 
-        process_status = Quilled_Data_Process(content,soup)
+        process_status = Quilled_Data_Process(content,soup,mydb,count)
         if process_status != False:
             print(" ======== All Processing Complated ========")
             count+=1
