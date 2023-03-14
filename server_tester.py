@@ -12,7 +12,7 @@ import re
 # time.sleep(10)
 import mysql.connector
 
-def Quilled_Data_Process():
+def Quilled_Data_Process(content):
     quilled_text=content.split('\n\n\n')
 
     out_tagaaa = {}
@@ -68,10 +68,10 @@ def Quilled_Data_Process():
                 break
 
     print("The End")
-    
+
     regex = r'({})'.format(r'|'.join(re.escape(w) for w in out_tagaaa))  
     try:
-        rt = re.sub(regex, find_replacement,(str(soup)))
+        rt = re.sub(regex, find_replacement,(str(soup),out_tagaaa))
     except:
         mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0]))
         mydb.commit() 
@@ -108,7 +108,7 @@ def get_from_database(mydb):
     print(mycursor.rowcount, "record fetched.")
     return alll
 
-def find_replacement(m):
+def find_replacement(m,out_tagaaa):
     return out_tagaaa[m.group(1)]
 
 def remove_non_ascii_1(data):
