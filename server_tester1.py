@@ -12,7 +12,8 @@ import re
 # time.sleep(10)
 import mysql.connector
 
-def Quilled_Data_Process(content,soup):
+def Quilled_Data_Process(content,soup,mydb):
+    mycursor = mydb.cursor()
     quilled_text=content.split('\n\n\n')
 
     out_tagaaa = {}
