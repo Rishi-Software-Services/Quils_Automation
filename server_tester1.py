@@ -251,7 +251,7 @@ def Quil_Login(Driver):
     time.sleep(10)
     print("======= Login Successfully =======")
 
-def Driver_settings():
+def Driver_settings(driver_path):    
     ########################## Driver Settings ####################
 
     chrome_options = Options()
@@ -268,51 +268,14 @@ def Driver_settings():
     chrome_options.add_argument('--ignore-certificate-errors')
     chrome_options.add_argument("--disable-notifications")
     chrome_options.add_argument("--disable-popup-blocking")
-
-    ####################### Add On Driver Path #####################
-    driver_path=r'/usr/bin/chromedriver'
-    # driver=webdriver.Chrome(options=chrome_options,executable_path="chromedriver.exe")
-    # driver = webdriver.Chrome(options=chrome_options
     s = Service(driver_path)
-
     driver = webdriver.Chrome(options=chrome_options, service=s)
     options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     return driver
 
-if "__main__" == __name__:
-    print('======== Start QuilBot Proccess ========')
-
-    # ########################## Driver Settings ####################
-
-    # chrome_options = Options()
-    # chrome_options.add_argument("--user-agent={customUserAgent}")
-    # chrome_options.add_argument("--window-size=1920,1080")
-    # chrome_options.add_argument("--disable-extensions")
-    # chrome_options.add_argument("--proxy-server='direct://'")
-    # chrome_options.add_argument("--proxy-bypass-list=*")
-    # chrome_options.add_argument("--start-maximized")
-    # chrome_options.add_argument('--headless')
-    # chrome_options.add_argument('--disable-gpu')
-    # chrome_options.add_argument('--disable-dev-shm-usage')
-    # chrome_options.add_argument('--no-sandbox')
-    # chrome_options.add_argument('--ignore-certificate-errors')
-    # chrome_options.add_argument("--disable-notifications")
-    # chrome_options.add_argument("--disable-popup-blocking")
-
-    # ####################### Add On Driver Path #####################
-    # driver_path=r'/usr/bin/chromedriver'
-    # # driver=webdriver.Chrome(options=chrome_options,executable_path="chromedriver.exe")
-    # # driver = webdriver.Chrome(options=chrome_options
-    # s = Service(driver_path)
-
-    # driver = webdriver.Chrome(options=chrome_options, service=s)
-    # options = webdriver.ChromeOptions()
-    # chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    
-    ################### Driver #########################
-    driver = Driver_settings()
-
+def main():
+    driver = Driver_settings(Chrome_driver_path)
     now = datetime.now()
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
     print("date and time =", dt_string)
@@ -355,12 +318,8 @@ if "__main__" == __name__:
             content= Paraphrase_Soup(driver,str1)
         except Exception as e:
             print("Error ==",e)  
-            time.sleep(120) 
-            driver.quit()
-
-            Quil_Login(driver)
-
-            continue
+            time.sleep(30)
+            return driver
 
         ######################### Send Quil Content to  Data Base #################
 
@@ -369,6 +328,21 @@ if "__main__" == __name__:
             print(" ======== All Processing Complated ========")
             count+=1
         else:
-            break    
+            return driver
+    return driver,True
 
-    driver.quit()
+
+if "__main__" == __name__:
+    print('======== Start QuilBot Proccess ========')
+
+    ################### Driver #########################
+
+    Chrome_driver_path = "/usr/bin/chromedriver"
+
+    ####################################################
+    while True:
+        driver = main()
+        driver[0].quit()
+        if driver[1] == True:
+            break
+        time.sleep(30)
