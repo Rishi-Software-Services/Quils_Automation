@@ -323,8 +323,10 @@ if "__main__" == __name__:
             content= Paraphrase_Soup(driver,str1)
         except Exception as e:
             print("Error ==",e)  
-            time.sleep(30) 
-            driver.refresh()  
+            time.sleep(120) 
+            driver.quit()
+            Quil_Login(driver)
+
             continue
 
         ######################### Send Quil Content to  Data Base #################
