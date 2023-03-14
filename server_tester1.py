@@ -275,7 +275,19 @@ def Driver_settings(driver_path):
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     return driver
 
-def main(mydb):
+def main():
+
+    ################ Data Base #################
+
+    mydb = mysql.connector.connect(
+        host="3.140.57.116",
+        user="wp_raj1",
+        password="rajPassword95$",
+        database="automation00"
+    )
+
+    ############################################
+
     driver = Driver_settings(Chrome_driver_path)
     now = datetime.now()
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
@@ -334,16 +346,16 @@ if "__main__" == __name__:
     Chrome_driver_path = "/usr/bin/chromedriver"
 
     ##################### Data Base ##############################
-    mydb = mysql.connector.connect(
-        host="3.140.57.116",
-        user="wp_raj1",
-        password="rajPassword95$",
-        database="automation00"
-    )
+    # mydb = mysql.connector.connect(
+    #     host="3.140.57.116",
+    #     user="wp_raj1",
+    #     password="rajPassword95$",
+    #     database="automation00"
+    # )
 
     ####################################################
     while True:
-        driver = main(mydb)
+        driver = main()
         if driver == True:
             break
         time.sleep(30)
