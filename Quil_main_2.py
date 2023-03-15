@@ -83,7 +83,6 @@ def Quilled_Data_Process(content,soup,mydb,count,x):
     if flag==1:
         try:
             mycursor.execute("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (new_article1,x[0]))
-            print("update bulk_feed_content set content_modify=%s,status=1 where bfc_id=%s", (new_article1,x[0]))
             Success_log.info("Content SeccessFully Quil status=1 where bfc_id=%s", (x[0]))
         except:
             mycursor.execute("update bulk_feed_content set content_modify=%s,status=0 where bfc_id=%s", (None,x[0]))
