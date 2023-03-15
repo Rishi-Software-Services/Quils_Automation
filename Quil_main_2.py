@@ -334,8 +334,9 @@ def main():
             content= Paraphrase_Soup(driver,str1)
         except Exception as ae:
             Error_log.exception(ae)  
-            time.sleep(60)
+            time.sleep(10)
             driver.quit()
+            time.sleep(80)
             return False
 
         ######################### Send Quil Content to  Data Base #################
