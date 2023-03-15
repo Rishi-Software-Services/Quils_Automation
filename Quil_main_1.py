@@ -301,6 +301,11 @@ def main():
     mycursor = mydb.cursor()
     count=0
     for x in alll:
+        
+        if x[4] is None or x[5] is None:
+            mycursor.execute("update bulk_feed_content set status=0 where bfc_id=%s"% (x[0]))
+            mydb.commit()
+            continue
         print(len(x))
         print(x[2])
         print("send2",x[0],x[1],x[-2],x[3])
