@@ -284,7 +284,7 @@ def main():
         host="3.140.57.116",
         user="wp_raj1",
         password="rajPassword95$",
-        database="automation00"
+        database="automation"
     )
 
     ############################################
