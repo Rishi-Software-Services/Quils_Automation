@@ -145,7 +145,7 @@ def Paraphrase_Soup(Driver,New_text):
         button_press.click()
     except TimeoutException:
         print("3Loading took too much time!")
-    timeout = 40
+    timeout = 80
     try:
         myElem = WebDriverWait(Driver, timeout).until(EC.presence_of_element_located((By.XPATH, '//button/div[text()="Rephrase"]')))
         print("paraphrase Page is ready!")
