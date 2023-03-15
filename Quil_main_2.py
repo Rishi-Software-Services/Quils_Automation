@@ -366,8 +366,9 @@ def setup_logger(name, log_file, level=logging.INFO):
     return logger
 
 Script_Path = os.path.dirname(os.path.abspath(__file__))
-
 log_files = os.path.join(Script_Path,"logs_file")
+if not os.path.exists(log_files):
+    os.mkdir(log_files)
 
 Error_file = os.path.join(log_files,"Error_.log")
 Success_file = os.path.join(log_files,"Successful_Quil.log")
