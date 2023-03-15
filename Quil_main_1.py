@@ -303,7 +303,7 @@ def main():
     for x in alll:
         print(len(x))
         print(x[2])
-        print("send2",x[0],x[1],x[3])
+        print("send2",x[0],x[1],x[-2],x[3])
         mycursor.execute("SELECT * FROM Total_posts where Destination_id=(%s)" %  (x[11]))
         total_quill_all = mycursor.fetchall()[-1][3]
 
@@ -324,7 +324,7 @@ def main():
             content= Paraphrase_Soup(driver,str1)
         except Exception as e:
             print("Error ==",e)  
-            time.sleep(30)
+            time.sleep(60)
             driver.quit()
             return False
 

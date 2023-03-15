@@ -189,7 +189,7 @@ if "__main__" == __name__:
         host="3.140.57.116",
         user="wp_raj1",
         password="rajPassword95$",
-        database="automation00"
+        database="automation"
     )
     ########################## Login Process ##########################
     Quil_Login(driver)
