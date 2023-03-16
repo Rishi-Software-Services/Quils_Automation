@@ -111,7 +111,8 @@ def get_from_database(mydb):
         webs = mycursor.fetchall()
         alll.extend(webs)
     #//div[5]/div[3]/div/div[1]/button/svg
-    print(mycursor.rowcount, "record fetched.")
+    # print(mycursor.rowcount, "record fetched.")
+    print("Record Fetched. =", len(alll))
     return alll
 
 def find_replacement(m,out_tagaaa):
