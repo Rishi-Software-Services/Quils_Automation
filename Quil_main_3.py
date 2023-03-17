@@ -154,7 +154,7 @@ def Paraphrase_Soup(Driver,New_text):
         print("4Loading took too much time!")
     copy_content = Driver.find_element(By.XPATH,value="//span[@id='editable-content-within-article']").text
     print("======== Quil Successfully ==========")
-    time.sleep(10)
+    time.sleep(30)
     return copy_content
 
 def process_soup(soup):
@@ -251,7 +251,7 @@ def Quil_Login(Driver):
 
     Click_login_button = Driver.find_element(By.XPATH,value="//button[normalize-space()='Log In']")
     Click_login_button.click()
-    time.sleep(10)
+    time.sleep(30)
     print("======= Login Successfully =======")
 
 def Driver_settings(driver_path):    
