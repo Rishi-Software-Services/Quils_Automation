@@ -409,4 +409,4 @@ if "__main__" == __name__:
                 break
         except Exception as e:
             Error_log.exception(e)
-        time.sleep(120)
+        time.sleep(122)
