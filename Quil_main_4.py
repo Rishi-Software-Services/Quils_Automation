@@ -349,6 +349,27 @@ def main(mydb):
             return True
     return True
 
+def Start_main():
+    while True:
+        try:
+            ################ Data Base #################
+            mydb = mysql.connector.connect(
+                host="3.140.57.116",
+                user="wp_raj1",
+                password="rajPassword95$",
+                database="automation"
+            )
+
+            driver = main(mydb)
+            if driver == True:
+                mydb.close()
+                return
+        except Exception as e:
+            Error_log.exception(e)
+            mydb.close()
+            print("=== Please Wait for 2 minutes ====")
+            time.sleep(120)
+
 ################ Loges File Settings ##############
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 
@@ -394,21 +415,6 @@ if "__main__" == __name__:
 
     ####################################################
     while True:
-        while True:
-            try:
-                ################ Data Base #################
-                mydb = mysql.connector.connect(
-                    host="3.140.57.116",
-                    user="wp_raj1",
-                    password="rajPassword95$",
-                    database="automation"
-                )
-
-                driver = main(mydb)
-                if driver == True:
-                    break
-                mydb.close()
-            except Exception as e:
-                Error_log.exception(e)
-            print("====== Quil_Process is Sleeping for 2 minutes..... ======")    
-            time.sleep(122)
+        Start_main()
+        print("====== Quil_Process is Sleeping for 2 minutes..... ======")    
+        time.sleep(120)
