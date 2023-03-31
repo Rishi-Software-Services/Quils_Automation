@@ -394,19 +394,20 @@ if "__main__" == __name__:
 
     ####################################################
     while True:
-        try:
-            ################ Data Base #################
-            mydb = mysql.connector.connect(
-                host="3.140.57.116",
-                user="wp_raj1",
-                password="rajPassword95$",
-                database="automation"
-            )
+        while True:
+            try:
+                ################ Data Base #################
+                mydb = mysql.connector.connect(
+                    host="3.140.57.116",
+                    user="wp_raj1",
+                    password="rajPassword95$",
+                    database="automation"
+                )
 
-            driver = main(mydb)
-            if driver == True:
-                break
-            mydb.close()
-        except Exception as e:
-            Error_log.exception(e)
-        time.sleep(122)
+                driver = main(mydb)
+                if driver == True:
+                    break
+                mydb.close()
+            except Exception as e:
+                Error_log.exception(e)
+            time.sleep(122)
