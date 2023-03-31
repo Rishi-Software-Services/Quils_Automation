@@ -410,4 +410,5 @@ if "__main__" == __name__:
                 mydb.close()
             except Exception as e:
                 Error_log.exception(e)
+            print("====== Quil_Process is Sleeping for 2 minutes..... ======")    
             time.sleep(122)
