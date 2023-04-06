@@ -127,18 +127,18 @@ def Paraphrase_Soup(Driver,New_text):
     time.sleep(10)
     delay = 30 # seconds
     try:
-        myElem = WebDriverWait(Driver, delay).until(EC.presence_of_element_located((By.XPATH,"//div[@id='inputText']")))
+        myElem = WebDriverWait(Driver, delay).until(EC.presence_of_element_located((By.XPATH,"//div[@id='paraphraser-input-box']")))
         print("get xpath")
             #print("Page is ready!")
     except TimeoutException:
         print("3Loading took too much time!")
 
     try:
-        Text_paste = Driver.find_element(By.XPATH,value="//div[@id='inputText']").clear()
+        Text_paste = Driver.find_element(By.XPATH,value="//div[@id='paraphraser-input-box']").clear()
     except:
         pass    
 
-    Text_paste = Driver.find_element(By.XPATH,value="//div[@id='inputText']")
+    Text_paste = Driver.find_element(By.XPATH,value="//div[@id='paraphraser-input-box']")
     Text_paste.send_keys(New_text)
     delay = 20 # seconds
     try:
